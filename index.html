@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complex Storytelling Task</title>
+    <style>
+        :root {
+            --primary: #5A67D8;
+            --secondary: #48BB78;
+            --danger: #F56565;
+            --bg: #EDF2F7;
+            --card-bg: #FFFFFF;
+            --text: #2D3748;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            border-top: 8px solid var(--primary);
+        }
+
+        h1 {
+            color: var(--primary);
+            margin-top: 0;
+            font-size: 26px;
+        }
+
+        .task-conditions {
+            background-color: #EBF4FF;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: left;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .task-conditions span {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .scene-box {
+            font-size: 80px;
+            margin: 20px 0;
+            background-color: #F7FAFC;
+            border: 2px dashed #CBD5E0;
+            border-radius: 12px;
+            padding: 40px 20px;
+            min-height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            letter-spacing: 10px;
+            transition: all 0.3s;
+        }
+
+        .scene-box.hidden {
+            font-size: 24px;
+            letter-spacing: normal;
+            background-color: #2D3748;
+            color: white;
+            border: none;
+        }
+
+        .input-area {
+            position: relative;
+            margin-bottom: 20px;
+            display: none; /* Hidden until observation is done */
+        }
+
+        textarea {
+            width: 90%;
+            height: 120px;
+            padding: 15px;
+            padding-right: 60px;
+            border-radius: 8px;
+            border: 2px solid #E2E8F0;
+            font-size: 16px;
+            font-family: inherit;
+            resize: none;
+            outline: none;
+            transition: border-color 0.3s;
+            line-height: 1.5;
+        }
+
+        textarea:focus {
+            border-color: var(--primary);
+        }
+
+        .mic-btn {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .mic-btn:hover {
+            background-color: #E53E3E;
+        }
+
+        .mic-btn.listening {
+            animation: pulse 1.5s infinite;
+            background-color: var(--secondary);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(72, 187, 120, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(72, 187, 120, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(72, 187, 120, 0); }
+        }
+
+        button.action-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+            margin: 5px;
+        }
+
+        button.action-btn:hover {
+            background-color: #4C51BF;
+        }
+
+        button.action-btn.secondary {
+            background-color: #A0AEC0;
+        }
+        
+        button.action-btn.secondary:hover {
+            background-color: #718096;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            font-size: 16px;
+            text-align: left;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .feedback.success {
+            background-color: #C6F6D5;
+            color: #22543D;
+            display: block;
+        }
+
+        .feedback.warning {
+            background-color: #FEEBC8;
+            color: #7B341E;
+            display: block;
+        }
+
+        .checklist {
+            list-style-type: none;
+            padding: 0;
+            margin: 10px 0 0 0;
+        }
+
+        .checklist li {
+            margin-bottom: 5px;
+        }
+
+        .check-icon {
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        .check-pass { color: var(--secondary); }
+        .check-fail { color: var(--danger); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Complex Memory & Reasoning Task</h1>
+        
+        <div class="task-conditions">
+            <p><strong>Task Rules (Complex Version):</strong></p>
+            <ul>
+                <li><span>- few elements:</span> Observe a complex scene with multiple characters and items.</li>
+                <li><span>- here-and-now:</span> The picture will be hidden. You must speak/write from memory using the <strong>Past Tense</strong>.</li>
+                <li><span>+ reasoning:</span> You must explain <strong>Why</strong> the situation happened (use words like <em>because, so, therefore</em>).</li>
+            </ul>
+        </div>
+        
+        <div class="scene-box" id="sceneDisplay">
+            <!-- Scene loaded here -->
+        </div>
+
+        <div id="observationControls">
+            <p>Observe the scene carefully. Click 'Hide & Start' when you are ready to remember and explain.</p>
+            <button class="action-btn" id="hideBtn">Hide & Start</button>
+        </div>
+
+        <div class="input-area" id="inputArea">
+            <textarea id="userInput" placeholder="Explain what happened and why... (e.g., The boy cried because the dog took his ice cream.)"></textarea>
+            <button class="mic-btn" id="micBtn" title="Click to speak">🎤</button>
+            <br>
+            <button class="action-btn" id="checkBtn">Submit Answer</button>
+            <button class="action-btn secondary" id="nextBtn">Next Scenario</button>
+        </div>
+
+        <div class="feedback" id="feedbackArea"></div>
+    </div>
+
+    <script>
+        // Complex scenarios with multiple elements requiring reasoning
+        const scenes = [
+            { 
+                emojis: '👦🍦 🐕💨 👦😭 👧😂', 
+                context: 'A boy lost his ice cream to a dog, so he cried while a girl laughed.',
+                elements: ['boy', 'ice cream', 'dog', 'girl']
+            },
+            { 
+                emojis: '⛈️ 👩☂️ 🚗💦 👨😠', 
+                context: 'It was raining. A car splashed water on a man, so he was angry.',
+                elements: ['rain', 'woman', 'umbrella', 'car', 'water', 'man']
+            },
+            { 
+                emojis: '🚴‍♂️🪨 💥 🤕 🚑🏥', 
+                context: 'A man riding a bike hit a rock, fell, and went to the hospital because he was hurt.',
+                elements: ['bike', 'man', 'rock', 'hospital', 'ambulance']
+            }
+        ];
+
+        // Grammatical checks
+        const pastTenseVerbs = ['was', 'were', 'had', 'did', 'took', 'ran', 'cried', 'laughed', 'rained', 'splashed', 'got', 'made', 'saw', 'went', 'lost', 'stole', 'fell', 'hit', 'hurt'];
+        const reasoningWords = ['because', 'so', 'therefore', 'since', 'as', 'reason', 'why'];
+
+        let currentSceneIndex = 0;
+        let isListening = false;
+
+        const sceneDisplay = document.getElementById('sceneDisplay');
+        const observationControls = document.getElementById('observationControls');
+        const inputArea = document.getElementById('inputArea');
+        const userInput = document.getElementById('userInput');
+        const hideBtn = document.getElementById('hideBtn');
+        const checkBtn = document.getElementById('checkBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const feedbackArea = document.getElementById('feedbackArea');
+        const micBtn = document.getElementById('micBtn');
+
+        // Web Speech API Setup
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition;
+
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.lang = 'en-US';
+            recognition.interimResults = false;
+
+            recognition.onstart = () => {
+                isListening = true;
+                micBtn.classList.add('listening');
+                userInput.placeholder = "Listening... Speak in past tense and explain why!";
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                // Append text if typing was already started
+                userInput.value = userInput.value ? userInput.value + ' ' + transcript : transcript;
+            };
+
+            recognition.onerror = (event) => {
+                console.error("Speech Recognition Error:", event.error);
+                alert("Microphone error. Please type your answer.");
+            };
+
+            recognition.onend = () => {
+                isListening = false;
+                micBtn.classList.remove('listening');
+                userInput.placeholder = "Explain what happened and why...";
+            };
+        } else {
+            micBtn.style.display = 'none';
+        }
+
+        function loadScene() {
+            sceneDisplay.classList.remove('hidden');
+            sceneDisplay.textContent = scenes[currentSceneIndex].emojis;
+            observationControls.style.display = 'block';
+            inputArea.style.display = 'none';
+            feedbackArea.className = 'feedback';
+            feedbackArea.innerHTML = '';
+            userInput.value = '';
+        }
+
+        function hideSceneAndStart() {
+            sceneDisplay.classList.add('hidden');
+            sceneDisplay.innerHTML = 'Picture hidden.<br>Describe from memory!';
+            observationControls.style.display = 'none';
+            inputArea.style.display = 'block';
+            userInput.focus();
+        }
+
+        function checkAnswer() {
+            const text = userInput.value.toLowerCase().trim();
+            if (!text) {
+                alert("Please write or say your description first.");
+                return;
+            }
+
+            const words = text.replace(/[^a-z0-9 ]/g, '').split(/\s+/);
+            
+            // Check 1: Multiple Elements (-few elements check)
+            const currentElements = scenes[currentSceneIndex].elements;
+            const foundElements = currentElements.filter(el => text.includes(el));
+            const hasMultipleElements = foundElements.length >= 2;
+
+            // Check 2: Past Tense (-here-and-now check)
+            const hasPastTense = words.some(word => word.endsWith('ed') || pastTenseVerbs.includes(word));
+
+            // Check 3: Reasoning (+reasoning check)
+            const hasReasoning = words.some(word => reasoningWords.includes(word));
+
+            const isAllPassed = hasMultipleElements && hasPastTense && hasReasoning;
+
+            feedbackArea.className = isAllPassed ? 'feedback success' : 'feedback warning';
+            
+            feedbackArea.innerHTML = `
+                <strong>Analysis Report:</strong>
+                <ul class="checklist">
+                    <li><span class="check-icon ${hasMultipleElements ? 'check-pass' : 'check-fail'}">${hasMultipleElements ? '✔' : '✘'}</span> <strong>Many Elements:</strong> ${hasMultipleElements ? 'Mentioned multiple details.' : 'Try to describe more objects/people from the scene.'}</li>
+                    <li><span class="check-icon ${hasPastTense ? 'check-pass' : 'check-fail'}">${hasPastTense ? '✔' : '✘'}</span> <strong>Past Tense (Memory):</strong> ${hasPastTense ? 'Used past tense correctly.' : 'Remember to use past tense verbs (e.g., was, took, walked).'}</li>
+                    <li><span class="check-icon ${hasReasoning ? 'check-pass' : 'check-fail'}">${hasReasoning ? '✔' : '✘'}</span> <strong>Reasoning:</strong> ${hasReasoning ? 'Explained the cause/effect.' : 'Explain <em>why</em> using words like "because" or "so".'}</li>
+                </ul>
+                <p style="margin-top:10px; font-weight:bold;">${isAllPassed ? 'Excellent! You met all the complex task conditions.' : 'Good try! Look at the red marks above and try to improve your sentence.'}</p>
+            `;
+        }
+
+        // Event Listeners
+        hideBtn.addEventListener('click', hideSceneAndStart);
+        checkBtn.addEventListener('click', checkAnswer);
+        nextBtn.addEventListener('click', () => {
+            currentSceneIndex = (currentSceneIndex + 1) % scenes.length;
+            loadScene();
+        });
+        micBtn.addEventListener('click', () => {
+            if (!recognition) return;
+            isListening ? recognition.stop() : recognition.start();
+        });
+
+        // Init
+        loadScene();
+    </script>
+</body>
+</html>
